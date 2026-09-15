@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "financial-annotation-harness"
+version = "0.1.0"
+description = "Reproducible TANET financial annotation experiment harness"
+requires-python = ">=3.12,<3.13"
+dependencies = ["openpyxl>=3.1.5,<4", "pydantic>=2.10,<3", "PyYAML>=6,<7", "openai>=2,<3", "httpx>=0.28,<0.29"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+
+[project.scripts]
+financial-harness = "financial_annotation_harness.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra"
+markers = ["live: explicitly authorized real API tests (not run by default)"]

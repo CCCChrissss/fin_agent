@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "algorithm": "sha256-canonical-json-v1",
+  "seed": 20260915,
+  "source_sha256": "9fea450f6937cc096f4f61dcf57be4901a139f9ba98588c3f2de2767aaa4a0ea",
+  "groups": {
+    "Single-Fact": {
+      "development": [
+        "SF09",
+        "SF06"
+      ],
+      "test": [
+        "SF04",
+        "SF02",
+        "SF03",
+        "SF08",
+        "SF05",
+        "SF01",
+        "SF07",
+        "SF10"
+      ]
+    },
+    "Comparison": {
+      "development": [
+        "CP05",
+        "CP03"
+      ],
+      "test": [
+        "CP09",
+        "CP07",
+        "CP04",
+        "CP02",
+        "CP06",
+        "CP01",
+        "CP10",
+        "CP08"
+      ]
+    },
+    "Growth_Rate": {
+      "development": [
+        "GR06",
+        "GR03"
+      ],
+      "test": [
+        "GR09",
+        "GR02",
+        "GR07",
+        "GR04",
+        "GR05",
+        "GR01",
+        "GR10",
+        "GR08"
+      ]
+    },
+    "Ratio": {
+      "development": [
+        "RT04",
+        "RT07"
+      ],
+      "test": [
+        "RT09",
+        "RT08",
+        "RT02",
+        "RT01",
+        "RT06",
+        "RT05",
+        "RT10",
+        "RT03"
+      ]
+    },
+    "Logic": {
+      "development": [
+        "LG03",
+        "LG01"
+      ],
+      "test": [
+        "LG04",
+        "LG02",
+        "LG05",
+        "LG06",
+        "LG09",
+        "LG07",
+        "LG10",
+        "LG08"
+      ]
+    },
+    "Arithmetic": {
+      "development": [
+        "AR09",
+        "AR07"
+      ],
+      "test": [
+        "AR04",
+        "AR10",
+        "AR06",
+        "AR03",
+        "AR08",
+        "AR05",
+        "AR01",
+        "AR02"
+      ]
+    }
+  },
+  "development": [
+    "AR07",
+    "AR09",
+    "CP03",
+    "CP05",
+    "GR03",
+    "GR06",
+    "LG01",
+    "LG03",
+    "RT04",
+    "RT07",
+    "SF06",
+    "SF09"
+  ],
+  "test": [
+    "AR01",
+    "AR02",
+    "AR03",
+    "AR04",
+    "AR05",
+    "AR06",
+    "AR08",
+    "AR10",
+    "CP01",
+    "CP02",
+    "CP04",
+    "CP06",
+    "CP07",
+    "CP08",
+    "CP09",
+    "CP10",
+    "GR01",
+    "GR02",
+    "GR04",
+    "GR05",
+    "GR07",
+    "GR08",
+    "GR09",
+    "GR10",
+    "LG02",
+    "LG04",
+    "LG05",
+    "LG06",
+    "LG07",
+    "LG08",
+    "LG09",
+    "LG10",
+    "RT01",
+    "RT02",
+    "RT03",
+    "RT05",
+    "RT06",
+    "RT08",
+    "RT09",
+    "RT10",
+    "SF01",
+    "SF02",
+    "SF03",
+    "SF04",
+    "SF05",
+    "SF07",
+    "SF08",
+    "SF10"
+  ]
+}

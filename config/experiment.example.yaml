@@ -1,0 +1,35 @@
+# Ollama-first. Formal model intentionally undecided; explicit --live required.
+protocol_version: "1.0"
+runs_per_condition: 3
+conditions: [A, B, C, D]
+max_retries: 2
+language: zh
+split_seed: 20260915
+selection_record: null
+model:
+  provider: ollama
+  base_url: http://127.0.0.1:11434
+  generator_model: ""
+  generator_version: ""
+  judge_model: ""
+  judge_version: ""
+  expected_ollama_version: null
+  expected_quantization: null
+  num_ctx: 8192
+  think: false
+  structured_output_mode: prompt_only
+  keep_alive: 5m
+  connect_timeout_seconds: 5
+  question_timeout_seconds: 900
+  generator_temperature: 0.0
+  judge_temperature: 0.0
+  max_tokens: 4096
+  supports_seed: true
+  base_seed: 20260915
+  timeout_seconds: 300
+search_top_k: 12
+max_tool_calls_per_attempt: 12
+max_model_calls_per_attempt: 14
+transport_retries: 0
+# Positive budget required for an explicitly authorized live study.
+max_live_calls: 0

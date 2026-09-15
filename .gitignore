@@ -1,0 +1,32 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Runtime / experiment outputs
+results/
+artifacts/runtime/
+artifacts/derived/
+config/experiment.local.yaml
+config/*.local.yaml
+logs/
+*.log
+
+# Temporary files
+*.tmp
+~$*.xlsx

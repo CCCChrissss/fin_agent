@@ -1,0 +1,21 @@
+version: "1.0"
+execution:
+  timeout_seconds: 3.0
+  memory_mb: 128
+  max_chars: 20000
+answers:
+  numeric_comparison: exact_after_declared_formatting
+  percent_decimal_places: 2
+  source_unit_required: true
+  year_calendar: gregorian
+  logic_labels: ["Yes", "No"]
+evidence:
+  required_facts_source: explicit_question_constraints_and_declared_operands
+  gold_available_online: false
+  context_format: markdown_financial_table
+  selected_ids_field: retrieved_fact_ids
+evaluation:
+  semantic_authority: independent_human_review
+  failed_artifact_policy: score_terminal_artifact_keep_denominator
+  evidence_averaging: [macro, micro]
+  zero_recovery_denominator: null

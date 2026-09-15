@@ -1,0 +1,39 @@
+# Copy to screening.local.yaml. Pin values from ONE ollama-preflight snapshot.
+experiment_kind: screening
+partition: development
+condition: B
+stage: initial
+run_indices: [1]
+concurrency: 1
+warmup_requests: 1
+order_seed: 20260915
+candidates:
+  - candidate_id: qwen35_9b
+    model_tag: qwen3.5:9b
+    digest: null
+    quantization: null
+    think: false
+  - candidate_id: gemma4_12b
+    model_tag: gemma4:12b
+    digest: null
+    quantization: null
+    think: false
+settings:
+  language: zh
+  split_seed: 20260915
+  model:
+    provider: ollama
+    base_url: http://127.0.0.1:11434
+    expected_ollama_version: null
+    num_ctx: 8192
+    max_tokens: 4096
+    generator_temperature: 0.0
+    judge_temperature: 0.0
+    supports_seed: true
+    base_seed: 20260915
+    structured_output_mode: prompt_only
+    keep_alive: 5m
+    connect_timeout_seconds: 5
+    timeout_seconds: 300
+    question_timeout_seconds: 900
+  max_live_calls: 0
