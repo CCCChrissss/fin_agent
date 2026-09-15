@@ -1,5 +1,7 @@
 # Financial Annotation Harness — TANET 2026
 
+**最新交接狀態：**兩候選 screening 與14筆人工 review 已完成，pending_reviews=0；正式模型尚未選定，正式 Test 尚未開始。下一步是釐清 Gemma reviewed E2E 0/12 的 component／validator 原因。請從 [Codex Handoff](docs/CODEX_HANDOFF.md) 接手，先讀既有產出，不重新跑模型。
+
 目前採 **Ollama-first / Windows**，正式模型尚未選定。先用 12 題 Development 的 Condition B 篩選 qwen3.5:9b 與 gemma4:12b 兩個候選，共 24 question-runs；A/B/C/D 定義不變。完整命令與選模流程見 [Local Model Screening](docs/local_model_screening.md)。程式不下載模型、不監控下載，預設推論預算仍為 0。
 
 第一版已提供唯讀 Excel 匯入、SQLite Fact Search、A/B/C/D runner、8 個 validators、獨立 Semantic Judge、Retry/Gate、JSONL traces 與離線 evaluation。預設不呼叫 API。
@@ -53,7 +55,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev.ps1 run --
 
 預期為 **576 question-runs**；這不是 API calls 數。Development 的完整四組三次 runs 為 144 question-runs。
 
-實際執行、freeze 與 review 匯入命令見 `docs/reproducibility.md`。本次實作沒有執行真實模型，也沒有代表研究者完成人工 Gold freeze。
+實際執行、freeze 與 review 匯入命令見 `docs/reproducibility.md`。目前已有 live smoke、Development screening 與 reviewed evaluation；尚未選定正式模型或完成 Gold freeze，詳見 `docs/CODEX_HANDOFF.md`。
 
 ---
 
