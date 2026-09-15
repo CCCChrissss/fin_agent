@@ -8,4 +8,8 @@
 overall_pass 必須為以上四項的 AND。不得重判 schema、fact ID 存在、year 存在、Python 執行或 Python-result/answer equality。
 錯誤代碼只用 SEMANTIC_PARSE_ERROR、CONCEPT_ERROR、EVIDENCE_ERROR、UNSUPPORTED_ANSWER，不使用 WRONG_EVIDENCE。
 失敗需提供 rule_id、field_path、observed_value、expected_constraint、recommended_correction。回饋精簡、只描述可見語意問題。
+observed_value 必須使用簡短純文字或單一 scalar。
+不要在 observed_value 中嵌入完整 JSON object、array、Markdown table 或需要大量 escape 的內容。
+若需要描述多個值，請壓縮成短字串，例如："selected values: 80000, 100000"。
+確保最終輸出是單一、合法、可直接解析的 JSON object。
 PASS 時 failure_codes 與 issues 為空。回傳指定 schema 的 JSON object，不要 Markdown fence。

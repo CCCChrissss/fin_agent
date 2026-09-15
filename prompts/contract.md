@@ -3,6 +3,10 @@
 四組共用以下資料契約：
 - semantic_parse.time 使用西元年與完整期間日期。instant 為年末，period_start=null；duration 為全年。
 - retrieved_fact_ids 只列最終選用 evidence，不是所有搜尋候選。selected_evidence 必須逐一對應，保留來源值與單位。
+- 所有 fact_id、財務數值、來源單位與 evidence 必須直接來自 search_financial_facts 的實際 tool response。
+- 不得自行建立 fact_id、估計財務數值、使用模型記憶補值，或引用未經工具取得的財務事實。
+- 若尚未取得回答問題所需的必要 facts，必須先呼叫 search_financial_facts；不得直接產生最終 annotation。
+- 若工具確實無法取得必要資料，answer=null，並保留完整 schema；不得虛構 evidence 或數值。
 - selected_evidence.value 是十進位字串。variable_name 指向 Python grounding variable；dictionary 以 index_key 指定年份。
 - Ratio 的 selected_evidence 前兩項順序為分子、分母。Growth_Rate 使用同概念的前後期。
 - golden_context 使用簡單 Markdown 財務表：標題報表名稱、第一欄「項目」、其餘表頭為民國或西元年份，數值可含千分位。末尾標示來源單位。只包含選用 facts。

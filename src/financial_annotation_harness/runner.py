@@ -17,9 +17,26 @@ from .validators import ValidationContext, all_pass, validate_all
 
 
 def search_tool_schema() -> dict:
-    return {"type": "function", "function": {"name": "search_financial_facts",
-            "description": "Deterministic financial fact lookup. years are Gregorian. Returns candidates, never an answer. No match alone does not prove out-of-scope.",
-            "parameters": SearchRequest.model_json_schema()}}
+    return {
+        "type": "function",
+        "function": {
+            "name": "search_financial_facts",
+            "description": (
+                "Deterministic financial fact lookup. "
+                "Returns source financial facts, never the final answer. "
+                "IMPORTANT: query must contain ONLY the accounting concept, "
+                "for example '營業收入'. "
+                "Do NOT include fiscal years such as '2025', '114年', or other "
+                "time expressions in query. "
+                "Fiscal years must be supplied through the years parameter. "
+                "When candidates matching the required concept and years have "
+                "already been returned, select the required evidence and stop "
+                "searching unless information is genuinely missing. "
+                "No match alone does not prove out-of-scope."
+            ),
+            "parameters": SearchRequest.model_json_schema(),
+        },
+    }
 
 
 def completion_gate(validation_results, judge_result) -> bool:
