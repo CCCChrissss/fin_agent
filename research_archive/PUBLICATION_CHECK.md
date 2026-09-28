@@ -1,6 +1,6 @@
 # Publication check 2026-09-28
 
-- Existing destination: `CCCChrissss/fin_agent`, private repository, `main` branch.
+- Existing destination: `CCCChrissss/fin_agent`, `main` branch. GitHub reported private at initial inspection and public at post-upload verification. The publication process did not change repository visibility.
 - Source snapshot: 121 project files; archive: 2,617 experiment files, excluding local caches and execution/rendering intermediates.
 - Common API-token patterns, private keys, credential URLs and literal secret assignments: no unresolved findings in the inspected payload.
 - Ten source/archive entries required removal of personal paths or email addresses. Office creator and last-modified-by metadata inspected; no populated values found in the published workbooks/documents.
