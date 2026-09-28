@@ -35,7 +35,7 @@ def inspect_python(code: str, max_chars: int = 20000) -> ast.Module:
             or fn.args.kwonlyargs or fn.args.vararg or fn.args.kwarg or fn.args.defaults):
         raise ValueError("solution must have no arguments, annotations, or decorators")
     if not fn.body or not isinstance(fn.body[-1], ast.Return):
-        raise ValueError("solution must end with return")
+        raise ValueError("solution must end with return at function level; statement if/else is unsupported. Use return 'Yes' if condition else 'No' for Logic.")
     if any(not isinstance(n, (ast.Assign, ast.Return)) for n in fn.body):
         raise ValueError("Only assignments and return are allowed in solution")
     nodes = list(ast.walk(tree))
@@ -175,4 +175,3 @@ if __name__ == "__main__" and sys.argv[1:] == ["--worker"]:
         output = {"success": False, "result": None, "locals": {}, "error": f"{type(exc).__name__}: {exc}",
                   "executor": "restricted-cpython-v1"}
     print(json.dumps(output, allow_nan=False))
-

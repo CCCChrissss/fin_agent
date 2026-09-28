@@ -37,9 +37,10 @@ ModelClient = ModelProvider  # Backward-compatible public import.
 
 
 class ProviderError(RuntimeError):
-    def __init__(self, kind: str, message: str):
+    def __init__(self, kind: str, message: str, *, diagnostics: dict | None = None):
         super().__init__(message)
         self.kind = kind
+        self.diagnostics = diagnostics
 
 
 def create_provider(settings, *, allow_live=False):

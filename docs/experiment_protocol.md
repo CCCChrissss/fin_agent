@@ -616,3 +616,17 @@ Trace 應使用 external state（JSONL / SQLite / Parquet 皆可），不可僅�
 - Trace Logger
 - Evaluation Pipeline
 
+
+
+## 16. v1.1 單次完整資料回歸修訂（2026-09-17）
+
+經使用者在完整回歸生成開始前核准，本輪採用 protocol_version=1.1、runs_per_condition=1。
+此節優先於第11節對本輪重複次數的要求；原v1.0及其三次結果仍保留為歷史紀錄。
+
+- 原因：投稿時程有限；已完成的三次Dev結果高度一致，保留作為已觀察的穩定性證據，但不推定全部60題均具相同穩定性。
+- 本輪：60題 × A/B/C/D × 1次 = 240 question-runs；Dev 12題共48筆，歷史Test 48題共192筆，分開評估。
+- A/B/C/D定義、Generator/Judge模型與參數、資料來源、規則、rubric、最大retry=2、metrics與failure code皆不變。
+- 固定run_index=1、seed=20260915；不挑選性補跑較佳組別。
+- 本輪無法估計跨run變異；sample SD與跨run信賴區間為不適用，不填0，也不混用過去Dev重複結果計算本輪變異。
+- 本輪屬固定版本回歸比較；歷史Test已使用，不宣稱未見holdout。先前三次Dev與本輪單次結果分表呈現。
+- 採用新設定、新輸出目錄與新freeze；不覆写原Gold、過去結果或三次版freeze。

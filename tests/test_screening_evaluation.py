@@ -30,9 +30,12 @@ def test_complete_screening_evaluation_and_blind_reviews(tmp_path, specimen, rul
     assert queue == sorted(queue, key=lambda r: r["review_id"])
     assert all("candidate_id" not in r and "run_index" not in r for r in queue)
     reviews = [{**r, "reviewer": "fixture-human", **{f: True for f in REVIEW_FIELDS}} for r in queue]
-    reviewed = evaluate_screenings([out], golds, questions, repo, rules, split, out / "reviewed", reviews)
+    provenance = {"revision_hash": "fixture-revision", "generation_project_hashes": {"scorer": "old"}, "evaluation_project_hashes": {"scorer": "new"}}
+    reviewed = evaluate_screenings([out], golds, questions, repo, rules, split, out / "reviewed", reviews, evaluation_provenance=provenance)
     assert reviewed["pending_reviews"] == 0 and all(m["e2e_accuracy"] == 1 for m in reviewed["models"])
     assert reviewed["winner"] is None
+    assert reviewed["evaluation_provenance"] == provenance
+    assert json.loads((out / "reviewed/evaluation_provenance.json").read_text(encoding="utf-8")) == provenance
 
 
 def test_retrieval_distinct_from_selection(specimen):

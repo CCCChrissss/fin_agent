@@ -22,8 +22,17 @@ Thumbs.db
 results/
 artifacts/runtime/
 artifacts/derived/
+outputs/
 config/experiment.local.yaml
 config/*.local.yaml
+config/*.local.yml
+config/*.local.json
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
 logs/
 *.log
 

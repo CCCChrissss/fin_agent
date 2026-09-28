@@ -39,8 +39,8 @@ class ModelConfig(StrictModel):
 
 
 class Settings(StrictModel):
-    protocol_version: Literal["1.0"] = "1.0"
-    runs_per_condition: Literal[3] = 3
+    protocol_version: Literal["1.0", "1.1"] = "1.0"
+    runs_per_condition: Literal[1, 3] = 3
     conditions: list[Literal["A", "B", "C", "D"]] = Field(default_factory=lambda: ["A", "B", "C", "D"])
     max_retries: Literal[2] = 2
     language: Literal["zh", "en"] = "zh"
@@ -53,9 +53,13 @@ class Settings(StrictModel):
     transport_retries: Literal[0] = 0
     max_live_calls: int = Field(default=0, ge=0)
     selection_record: str | None = None
+    review_mode: Literal["human", "ai_assisted"] = "human"
+    review_record: str | None = None
 
     @model_validator(mode="after")
     def four_conditions(self):
+        if (self.protocol_version, self.runs_per_condition) not in (("1.0", 3), ("1.1", 1)):
+            raise ValueError("Run count must match the explicitly selected protocol revision")
         if self.conditions != ["A", "B", "C", "D"]:
             raise ValueError("Main protocol requires exactly A/B/C/D in that order")
         return self

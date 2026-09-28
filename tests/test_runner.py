@@ -43,6 +43,27 @@ def test_c_repairs_on_second_attempt_without_judge(tmp_path, specimen, rules, pr
     assert "expected_constraint" in client.requests[-1]["messages"][-1]["content"]
 
 
+def test_c_records_comparison_years_as_canonical_gregorian_without_changing_raw_artifact(
+        tmp_path, specimen, rules, prompts):
+    artifact = {**specimen[2], 'question_type': 'Comparison', 'unit': 'year', 'answer': '114年'}
+    artifact['python_solution'] = (
+        'def solution():\n'
+        '    revenue_2024 = 100\n'
+        '    revenue_2025 = 120\n'
+        '    values_by_year = {2024: revenue_2024, 2025: revenue_2025}\n'
+        '    labels_by_year = {2024: "113年", 2025: "114年"}\n'
+        '    return labels_by_year[max(values_by_year, key=values_by_year.get)]')
+    final, attempts, _, _ = execute(
+        tmp_path, specimen, rules, prompts, 'C', [search_turn(), Turn(content=json.dumps(artifact))])
+    assert final['final_status'] == 'VALIDATED'
+    assert attempts[0]['artifact']['answer'] == '114年'
+    assert attempts[0]['python_result'] == '114年'
+    assert attempts[0]['normalized_answer'] == 2025
+    assert attempts[0]['normalized_python_result'] == 2025
+    assert final['normalized_answer'] == 2025
+    assert final['normalized_python_result'] == 2025
+
+
 def test_c_stops_after_three_attempts(tmp_path, specimen, rules, prompts):
     final, attempts, client, _ = execute(tmp_path, specimen, rules, prompts, "C", [Turn(content="{}") for _ in range(4)])
     assert final["final_status"] == "FAILED" and final["attempt"] == 3
@@ -118,3 +139,27 @@ def test_gate_requires_every_validator(specimen, rules):
     assert not completion_gate(checks[:-1], verdict)
     checks[4].status = "SKIPPED"
     assert not completion_gate(checks, verdict)
+
+
+class TwoPhaseScriptedClient(ScriptedClient):
+    two_phase_generator = True
+
+    def describe_completion_request(self, role, seed, tools):
+        return {'role': role, 'seed': seed, 'format': 'annotation-schema' if role == 'generator' and not tools else None}
+
+
+def test_two_phase_generator_retrieves_before_schema_finalization(tmp_path, specimen, rules, prompts):
+    repo, question, artifact, _ = specimen
+    client = TwoPhaseScriptedClient([search_turn(), Turn(content=json.dumps(artifact))])
+    with TraceStore(tmp_path / 'two-phase') as store:
+        runner = AnnotationRunner(Settings(), repo, rules, prompts, client, store)
+        final = runner.run_question(question, source_question_id='SYN01', condition='C', run_index=1, experiment_id='test')
+        events = store.read('events')
+    assert final['final_status'] == 'VALIDATED'
+    generator_requests = [r for r in client.requests if r['role'] == 'generator']
+    assert generator_requests[0]['tools']
+    assert generator_requests[1]['tools'] == []
+    transitions = [e for e in events if e['event'] == 'generator_phase_transition']
+    assert len(transitions) == 1 and transitions[0]['phase'] == 'structured_finalization'
+    final_request = [e for e in events if e['event'] == 'generator_request'][-1]
+    assert final_request['request_parameters']['format'] == 'annotation-schema'

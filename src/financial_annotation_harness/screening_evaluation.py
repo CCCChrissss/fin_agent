@@ -63,7 +63,7 @@ def summarize(rows):
     return result
 
 
-def evaluate_screenings(directories, gold_rows, questions, repo, rules, split, output, reviews=None):
+def evaluate_screenings(directories, gold_rows, questions, repo, rules, split, output, reviews=None, *, evaluation_provenance=None):
     labels = {r["review_id"]: r for r in reviews or []}
     if len(labels) != len(reviews or []):
         raise ValueError("Duplicate review IDs")
@@ -163,6 +163,9 @@ def evaluate_screenings(directories, gold_rows, questions, repo, rules, split, o
                "candidate_profiles": manifests[0]["screening_config"]["candidates"],
                "ollama_version": manifests[0]["screening_config"]["settings"]["model"]["expected_ollama_version"],
                "winner": None, "note": "Human selection required. Screening Gold is provisional until Gold Review."}
+    if evaluation_provenance is not None:
+        summary["evaluation_provenance"] = evaluation_provenance
+        write_new_json(output / "evaluation_provenance.json", evaluation_provenance)
     write_new_json(output / "summary.json", summary)
     write_new_json(output / "selection_template.json", {"reviewer": "", "reason": "", "candidate_id": "",
                    "evaluation_summary_hash": digest(summary), "evaluation_summary_path": "", "model_tag": "", "digest": "", "quantization": "",

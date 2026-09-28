@@ -19,7 +19,30 @@ def project_hashes(root: Path) -> dict[str, str]:
     supplement = root / "docs/local_model_screening.md"
     if supplement.exists():
         paths.append(supplement)
+    amendment = root / "docs/ai_review_amendment.md"
+    if amendment.exists():
+        paths.append(amendment)
     return {p.relative_to(root).as_posix(): file_hash(p) for p in sorted(set(paths))}
+
+
+def review_provenance(root, settings, source_manifest):
+    if settings.review_mode == "human":
+        return {"review_mode": "human"}
+    if not settings.review_record:
+        raise ValueError("AI review requires an explicit review record")
+    path = (root / settings.review_record).resolve(strict=True)
+    if not path.is_relative_to(root):
+        raise ValueError("AI review record must be inside project")
+    record = read_json(path)
+    if record.get("source_sha256") != source_manifest["sha256"]:
+        raise ValueError("AI review source mismatch")
+    if (record.get("review_kind") != "ai_assisted" or record.get("status") != "COMPLETE"
+            or not record.get("reviewer") or record.get("question_count") != 60
+            or record.get("reviewed_question_count") != 60
+            or record.get("rules_reviewed") is not True or record.get("judge_rubric_reviewed") is not True):
+        raise ValueError("Incomplete AI review record")
+    return {"review_mode": "ai_assisted", "review_record_hash": file_hash(path),
+            "reviewer": record["reviewer"], "human_review_completed": False}
 
 
 def validate_selection(root, settings):
@@ -52,8 +75,10 @@ def validate_selection(root, settings):
 
 
 def create_freeze(root: Path, source_manifest: dict, split: dict, settings, output: Path, *, reviewer: str, attestation: str):
-    if not reviewer.strip() or attestation != "gold-and-rules-reviewed":
+    expected_attestation = "ai-reviewed-gold-and-rules" if settings.review_mode == "ai_assisted" else "gold-and-rules-reviewed"
+    if not reviewer.strip() or attestation != expected_attestation:
         raise ValueError("Human review attestation required; software cannot approve Gold")
+    review = review_provenance(root, settings, source_manifest)
     if len(split["development"]) != 12 or len(split["test"]) != 48 or set(split["development"]) & set(split["test"]):
         raise ValueError("Invalid main experiment split")
     settings.require_live()
@@ -61,7 +86,7 @@ def create_freeze(root: Path, source_manifest: dict, split: dict, settings, outp
     manifest = {"schema_version": "1.0", "reviewer": reviewer, "attestation": attestation, "frozen_at": timestamp(),
                 "source_manifest_hash": digest(source_manifest), "split_hash": digest(split),
                 "settings_hash": digest(settings.model_dump()), "annotation_schema_hash": digest(Annotation.model_json_schema()),
-                "project_hashes": project_hashes(root), "selection_hash": selection_hash}
+                "project_hashes": project_hashes(root), "selection_hash": selection_hash, "review_provenance": review}
     if settings.model.provider == "ollama":
         from .model_client import create_provider
         from .runtime_environment import environment_snapshot
@@ -80,7 +105,10 @@ def verify_freeze(root: Path, source_manifest: dict, split: dict, settings, free
               "settings_hash": digest(settings.model_dump()), "annotation_schema_hash": digest(Annotation.model_json_schema()),
               "project_hashes": project_hashes(root)}
     checks["selection_hash"] = validate_selection(root, settings)
-    if freeze.get("attestation") != "gold-and-rules-reviewed" or not freeze.get("reviewer"):
+    expected_attestation = "ai-reviewed-gold-and-rules" if settings.review_mode == "ai_assisted" else "gold-and-rules-reviewed"
+    if settings.review_mode == "ai_assisted":
+        checks["review_provenance"] = review_provenance(root, settings, source_manifest)
+    if freeze.get("attestation") != expected_attestation or not freeze.get("reviewer"):
         raise ValueError("Missing human freeze attestation")
     for name, value in checks.items():
         if freeze.get(name) != value:

@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "revision_id": "screening-001-format-equivalence-v1.1",
+  "reason": "Accept explicit equivalent source-unit labels and valid Markdown tables with optional outer pipes; retain numeric, year, evidence, Python binding and all A/B/C/D requirements.",
+  "authorization": "Researcher explicitly approved equivalent-format parsing and offline reevaluation of both original models in Codex on 2026-09-16.",
+  "manifest_hashes": [
+    "5c9943cba09fe81d4c61569679c52620f9ff428b0fdcc2e10f60d289290f8b89"
+  ],
+  "source_manifest_hash": "7358bfe500820207e5cc75e412fb8c6a3ea7f24d59f1f37498bc4a39273303b0",
+  "split_hash": "a77a1c4c448c7b377b09fdf0f7dd1f7a36b853ae7090eb5c87e4cdbf381bc2cf",
+  "changes": {
+    "src/financial_annotation_harness/cli.py": {
+      "before": "377b7e69b517509e678511dcdcad80dd50c493f0e69e2a2041c7d4bd74211290",
+      "after": "e21ad8ea9641be8b59a452652e77851f88e9d4da5b5f5a2831e2aaa2431fd166"
+    },
+    "src/financial_annotation_harness/reevaluation.py": {
+      "before": null,
+      "after": "07dc3aa6e55c54013358431c2ac09a5c29ef5d32aaf65954fd7d604824c65a2c"
+    },
+    "src/financial_annotation_harness/screening_evaluation.py": {
+      "before": "4b194e802fd86fa372a28b312a3660d560fbe0a2d0cb1783ad20891238360f2f",
+      "after": "a0841c0bd3811fab02dff42d6831a727f317e25e5d0957032597609af7a18109"
+    },
+    "src/financial_annotation_harness/validators.py": {
+      "before": "ed779dfa98ebb8acfc301578b2f026158478139753ce9c3e853b443d483868b4",
+      "after": "b3818d6e7f3265d40b2f4afc8834a24e4d08d1b07eba0e6b61f0a1f660500ed6"
+    }
+  }
+}

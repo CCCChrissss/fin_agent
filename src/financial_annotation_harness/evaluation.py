@@ -211,6 +211,8 @@ def evaluate_experiment(directory: Path, gold_rows: list[dict], questions: list[
                "observed_question_runs": len(observed), "pending_review_count": len(queue), "metrics": aggregate,
                "evaluated_at": timestamp(), "review_labels_hash": digest(reviews or []),
                "rules_hash": digest(rules), "experiment_manifest_hash": digest(manifest)}
+    summary["review_provenance"] = manifest.get("review_provenance", {"review_mode": "human"})
+    summary["semantic_label_sources"] = sorted({r.get("review_kind", "human_unspecified") for r in reviews or []})
     write_new_json(output / "aggregate_metrics.json", summary)
     lines = ["# Financial Annotation Evaluation", "", f"Mode: **{manifest['mode']}**. Question-runs: {len(observed)}/{len(expected)}.",
              f"Pending independent reviews: {len(queue)}. Null metrics are not zero.", "",

@@ -1,14 +1,20 @@
 # 財務問答標註 Agent — Codex Handoff
 
-> **接手入口：先讀第 12 節，再執行第 15 節的唯讀 component 查詢。不要先啟動模型。**
+> **最新狀態（2026-09-16 21:28 台北）：研究者已授權 AI 代審及自主執行。Gold 60 題 AI 審查與 Python/context 核對完成，非人工審查。`results/dev-ai-assisted-001` 正在執行 144 題次；`scripts/complete_ai_study.py` 已以背景程序接續等待，之後會自動離線 AI 評分、freeze、576 題次 Test 與評分。不要另開重複 runner、不要修改已被 manifest hash 固定的 src/prompts/config YAML/protocol。最新階段見 `outputs/ai-assisted-study/status.json`，視覺報告為 `outputs/ai-assisted-study/experiment_results.html`。本段取代下列歷史「等待人工」描述。**
+
+本輪設定：`config/experiment.ai-assisted.v1.json`；Gold 審查紀錄：`artifacts/runtime/ai-gold-review-20260916.json`；方法修訂：`docs/ai_review_amendment.md`。主實驗仍固定 Gemma4 12B，A/B/C/D 不變。離線 AI reviewer 使用獨立 request、不看線上 Judge verdict/Generator history/Gold answer/Python result；同模型偏差須揭露。保存原人工審核工作簿未完成，不冒名填寫。
+
+背景流程若報錯，讀 `outputs/ai-assisted-study/error.txt` 與 `commands.log` 後診斷，不可為成功率而重抽失敗題。Dev 完整後的自動 gate 僅查完整性與基礎設施錯誤，不以較高 accuracy 挑選 run。未定語意指標維持 null；不偽造人工labels。
+
+> **2026-09-16 更新：E2E 根因分析、等價格式 parser v1.1 與兩模型共同離線重評已完成。研究者已選定 Gemma、省略 tie-break。人工審核已改成可操作的 Excel，並新增自動 validation 與離線 Dev preflight；下一步只需完成 [人工審查](review_gate_v1.1.md)。**
 >
-> 本文件依本機 repository、immutable results、review labels 與原始碼實際盤點建立，不是對話摘要。盤點基準 commit：`061700fc16f7b78cbbbd348c36b0b6c43ee0e116`。本次只交接，不修 E2E、不重評、不重跑模型。
+> 本文件依本機 repository、immutable results、review labels 與原始碼實際盤點建立，不是對話摘要。盤點基準 commit：`061700fc16f7b78cbbbd348c36b0b6c43ee0e116`。此為原交接基準；2026-09-16 已追加診斷及核准的格式修正／重評，沒有重新生成模型輸出。
 
 ## 1. 專案目的
 
 研究者最新研究方向：**「具驗證與回饋機制之財務問答標註 Agent 設計與評估」**，預計投稿 TANET 2026。既有 README 的早期暫定題名仍屬研究歷史；本次沒有改寫 protocol。
 
-工作目錄：`C:\Projects\財報標註`。GitHub：<https://github.com/CCCChrissss/fin_agent>。分支 `main`，遠端 `origin` 為該 repository。
+工作目錄：`.`。GitHub：<https://github.com/CCCChrissss/fin_agent>。分支 `main`，遠端 `origin` 為該 repository。
 
 系統產生可追溯的 annotation：問題語意分解 → 財務概念對應 → Financial Fact Search → evidence selection → Golden Context → Python reasoning → answer。C/D 再加入驗證、回饋與完成條件。研究核心是固定資料及模型下的 Harness 比較，不是完整財報 RAG 或多代理平台。
 
@@ -125,7 +131,7 @@ Manifest `settings.model.generator_model=offline-scripted`、`generator_version=
 - 兩候選 B screening 完成，共24題次、24個 final。
 - Initial evaluation 完成，pending_reviews=14。
 - 14 筆人工語意 review 已填入 labels；reviewed evaluation 完成，pending_reviews=0。
-- winner 仍為 null；selection_template 為 DRAFT。未找到正式 selection record 或 freeze_manifest；沒有正式 Test 產出。
+- 評估 summary 的 winner 仍為 null、原 selection_template 維持 DRAFT；這是自動評估的原始產物，不回填。2026-09-16 研究者另行確認 Gemma，正式 record 已建立於 config/model_selection/gemma4-12b-v1.json；尚無 freeze_manifest 或正式 Test。
 - 本次只核對、寫 handoff、執行離線測試及 Git 操作；不更動既有實驗結果。
 
 既有108項測試通過紀錄屬過去版本驗證；本次新執行結果另記於第17節，不能用歷史測試代替當次驗證。
@@ -220,38 +226,27 @@ unit格式、exact answer mismatch、schema、fact ID存在、Python執行由det
 
 ## 12. Current Blocking Issue
 
-**Gemma的schema／evidence ID／執行率遠高於Qwen，但兩者 reviewed E2E 都是0。winner仍未選定。**
+**根因分析已完成；詳見 [e2e_failure_analysis.md](e2e_failure_analysis.md)。目前 pending_reviews=0，研究者已選定 Gemma、省略 tie-break，正式 Test 未開始。**
 
-已觀察（從既有per_question讀取，不是重新執行評分）：Gemma12題的unit_accuracy、evidence_accuracy、python_accuracy皆0；12題皆有UNIT-05。這只指出優先調查入口，**尚未確認**是模型每題確實有必要元件錯誤、規則契約過嚴、或evaluator實作問題。
+2026-09-16 先以原程式完整重現 24 題，逐題 dict 與原 reviewed 完全相等。確認 Gemma 全部 UNIT-05 來自隱含標籤限制，RT07 的表格邊界也被誤拒。研究者已核准接受等價格式；UnitValidator／EvidenceValidator v1.1、精確 revision 檢查及共同離線重評已完成。
 
-下一個Codex必須逐題追：
+新結果：`results/screening-001/evaluation-reviewed-v1.1/`。Gemma unit accuracy 0/12 → 8/12，Qwen 0/12 → 1/12；Gemma RT07 的 GOLD-01 消失。兩模型 E2E 仍為 0，Gemma evidence_accuracy／python_accuracy 仍為 0。原 manifest、outputs、labels、舊 evaluation 都保留。
 
-1. `evaluation-reviewed/per_question.jsonl` 中六元件、e2e、offline_failure_codes、offline_validator_results。
-2. 依question_id找 `gemma4_12b/run_01/B/attempts.jsonl` 中原始annotation與tool evidence。
-3. 對照review labels、原題與Gold，再讀validators.py對應rule；區分語意判斷、格式限制、數值/grounding錯誤。
-4. 重點檢查UnitValidator、EvidenceValidator、YearValidator；優先UNIT-05、POT-01、GOLD-01、TIME-02，保留其他實際出現的rule。
+已定位的剩餘問題：Gemma 11 題 scalar 搭配非空 index_key（POT-01）、7 題 duration 缺 period_start（TIME-02）、2 題年份偏移（TIME-01）、3 題答案與 Python 不一致（POT-02），另有實際題型、答案單位或 context 錯誤。不能自動修原 annotation 或為非零 E2E 關閉這些規則。
 
-`evaluation.py::score_attempt` 的重要關聯：
-
-- semantic_parsing_accuracy還會AND YearValidator，不能直接等同human time_pass。
-- unit_accuracy要求正規化unit等於Gold，且UnitValidator PASS。
-- evidence_accuracy包含ID完全相同、EvidenceValidator、FactExistenceValidator及人工evidence/context判斷。
-- python_accuracy包含執行、Gold結果、PythonResultValidator、EvidenceValidator、QuestionTypeValidator及人工reasoning。因此EvidenceValidator失敗也會打掉Python component，不等於Python無法執行。
-- E2E為六元件AND。某個元件已知錯誤時，即使尚待human review，initial E2E也能為0；initial出現0不表示已完成人工審查。
-
-**本次沒有做根因定案、修改evaluator、修改rules或重算既有結果。**若下一步證實implementation bug，必須先建立失敗測試、記錄原因與版本，再依同一修正公平重評兩模型的原始immutable artifacts，輸出新目錄；不得重新生成回答後挑好結果。
+研究者已於 2026-09-16 確認 Gemma、省略 tie-break，selection record 與 experiment.gemma4.v1.json 已建立並通過載入／selection hash 驗證。下一步完成 [Gold／rules／rubric review](review_gate_v1.1.md)。已準備分開的 Dev 12 題與 Test 48 題人工 Gold 材料，尚未評分；軟體通過測試不等於完成人工 review／freeze。
 
 ## 13. 下一步 Checklist
 
-- [ ] 分析 evaluation-reviewed/per_question.jsonl。
-- [ ] 建立Gemma12題E2E failure breakdown，逐筆列出必要component與rule。
-- [ ] 判斷evaluator、Gold、rules是否存在系統性問題，區分實作bug與研究規則變更。
-- [ ] 若證實evaluator bug，先加test再修，保存修正理由與commit。
-- [ ] 必要時以原始immutable artifacts重新offline evaluation，另立輸出與版本。
-- [ ] 由研究者決定是否需要tie-break；不可自動執行。
-- [ ] 人工選定winner，記錄品質、穩定性與速度取捨。
-- [ ] 建立正式selection record，核對tag/digest/quantization及reviewed evidence hash。
-- [ ] 完成Gold／deterministic rules／Judge rubric review。
+- [x] 分析 evaluation-reviewed/per_question.jsonl。
+- [x] 建立Gemma12題E2E failure breakdown，逐筆列出必要component與rule。
+- [x] 完成 Dev 失敗根因與格式契約差異分析；完整 Gold／rules review 仍待研究者完成。
+- [x] 依研究者確認，先加失敗測試再修等價格式 parser，保存原因與精確 code hashes。
+- [x] 原始 immutable artifacts 共同重評至 evaluation-reviewed-v1.1，保留原生成與新評分版本。
+- [x] 研究者確認省略 tie-break，不新增模型抽樣。
+- [x] 研究者選定 Gemma，記錄品質、穩定性與速度取捨。
+- [x] 建立正式 selection record，核對 tag/digest/quantization 及 reviewed evidence hash。
+- [ ] 在 `financial_gold_review_v1.1.xlsx` 完成 Gold／deterministic rules／Judge rubric review，並取得 `validate-review=COMPLETE`、`dev-preflight=READY`。
 - [ ] 同一Generator/Judge模型執行12 Dev的A/B/C/D。
 - [ ] 僅利用Development做Harness tuning。
 - [ ] Freeze v1.0。
@@ -265,7 +260,7 @@ unit格式、exact answer mismatch、schema、fact ID存在、Python執行由det
 - 不在screening後只為Qwen或Gemma提供特殊prompt、參數或強制JSON grammar。
 - 不為迎合Gemma而放寬evaluator，不將所有E2E=0直接歸咎模型。
 - 不把online Judge PASS當Gold，不把smoke當排名，不排除FAILED分母。
-- 不直接宣告Gemma winner、tie-break必要、或研究實驗完成。
+- 不變更已確認的 Gemma 選模／省略 tie-break 決定，也不宣稱研究實驗已完成。
 - 不重新生成同一批Dev後挑最好輸出，不改hash以繞過provenance gate。
 - 不下載／輪詢／監控模型來「等進度」；缺資料時先取得原artifact。
 - 不新增OCR、Vector DB、XBRL crawler、Web frontend或不必要Multi-Agent。
@@ -273,12 +268,12 @@ unit格式、exact answer mismatch、schema、fact ID存在、Python執行由det
 
 ## 15. 常用命令
 
-全部在 `C:\Projects\財報標註` 的PowerShell執行；需要Python3.12的`.venv`。命令名稱及旗標已對照`cli.py::parser`與`scripts/dev.ps1`。以下模型命令是操作參考，**不是交接後立即執行清單**。
+全部在 `.` 的PowerShell執行；需要Python3.12的`.venv`。命令名稱及旗標已對照`cli.py::parser`與`scripts/dev.ps1`。以下模型命令是操作參考，**不是交接後立即執行清單**。
 
 ### 接手第一個調查：唯讀已評分components
 
 ```powershell
-Set-Location 'C:\Projects\財報標註'
+Set-Location '.'
 Get-Content -LiteralPath '.\results\screening-001\evaluation-reviewed\per_question.jsonl' -Encoding UTF8 |
     ForEach-Object { $_ | ConvertFrom-Json } |
     Where-Object candidate_id -eq 'gemma4_12b' |
@@ -322,12 +317,12 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev.ps1 smoke 
 # 已完成的screening不得照此重新生成；只有明確核准的新研究批次才用--live。
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev.ps1 screen --config config/screening.local.yaml --output results/screening-new --live
 # 不呼叫模型。僅在需要重新評估且provenance相符時使用新的輸出目錄。
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev.ps1 evaluate-screening --experiment results/screening-001 --reviews results/screening-001/review-labels.jsonl --output results/screening-001/evaluation-reviewed-new
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev.ps1 evaluate-screening --experiment results/screening-001 --reviews results/screening-001/review-labels.jsonl --revision config/evaluation_revisions/screening-001-format-v1.1.json --output results/screening-001/evaluation-reviewed-new
 ```
 
-**Provenance限制：**目前CLI將manifest.project_hashes與現有project_hashes嚴格比對。修改evaluator後上述重評命令會拒絕執行；下一任若修bug，須先提出可稽核的offline reevaluation版本流程，保存原manifest與修正版本，不能直接編輯舊manifest或刪檢查繞過。此流程本次未實作。
+**Provenance 限制：**不指定 revision 時仍嚴格比較原始 source／split／project hashes。指定 revision 只允許 JSON 精確列出的評分檔案 before／after 差異，且 source／split 不得變動；prompt、rules、runner 等不在允許名單。新結果記錄 `evaluation_provenance.json` 與 summary 內的雙版本 hash，不編輯原 manifest。若之後程式再次變更，現有 revision 會失效，必須另建有原因及授權的新 revision，不能更新原 record 迎合新檔。
 
-本次只新增handoff及更新README；兩檔均不在project_hashes範圍，保留目前原碼與manifest相符的重評能力。
+此核准流程已於 2026-09-16 實作；版本檔在 `config/evaluation_revisions/screening-001-format-v1.1.json`。Results 不納入 Git，跨機器交接須另移交資料。
 
 ## 16. 重要檔案位置
 
@@ -357,6 +352,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev.ps1 evalua
 README與local_model_screening內「尚未真實推論」等早期敘述，以本handoff的artifact盤點為最新狀態；本次不修改被manifest納入hash的研究文件。
 
 ## 17. Reproducibility / Provenance
+
+**下列表格是原 screening／交接版本的歷史核對，並非現在程式 hash。**2026-09-16 修正後的精確差異在 revision JSON，新結果及其 hashes 見失敗分析報告。
 
 本次核對：source/derived hashes有效；本機解析後local config等於screening manifest；所有manifest.project_hashes與目前相對檔案一致；兩候選attempts有相同prompt_version。基準commit `061700fc16f7b78cbbbd348c36b0b6c43ee0e116` 為盤點時HEAD；manifest本身沒有直接存Git SHA，對應關係以實際檔案hash驗證，不冒稱manifest有該欄。
 
@@ -391,7 +388,8 @@ Canonical hash定義：UTF-8 JSON、sort_keys=true、ensure_ascii=false、separa
 > - **Screening completed**：24 question-runs，153 inference requests（含2 warm-ups）。
 > - **Human review completed**：14筆署名labels已匯入。
 > - **pending_reviews = 0**。
-> - **winner NOT selected**。
+> - **winner SELECTED: Gemma4 12B**；研究者確認，省略 tie-break。
 > - **Formal Test NOT started**：本機無正式Test產出，與研究者聲明一致。
-> - **Next task = explain Gemma E2E 0/12**：先逐題核對component／validator，再判斷模型錯誤、規則問題或evaluator bug。
-> - **不要先重跑模型、改規則、宣告Gemma winner或啟動tie-break。**
+> - **E2E analysis and format-equivalence v1.1 reevaluation completed**：根因已定位，Gemma unit 8/12，E2E 仍為 0。
+> - **Next task = human Gold/rules/rubric review**；材料已備妥，尚未核准。
+> - **人工審查完成前不啟動 Dev A/B/C/D；Freeze 前不啟動正式 Test。**

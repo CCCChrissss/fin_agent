@@ -1,0 +1,53 @@
+{
+  "status": "SELECTED",
+  "reviewer": "Researcher (Codex conversation user; identity not independently verified)",
+  "reason": "Researcher accepted Gemma4 12B as Generator and fresh-context Judge and waived tie-break. Compared with Qwen: schema 12/12 vs 2/12, Python execution 11/12 vs 2/12, answer accuracy 6/12 vs 2/12, no-output 0 vs 10; both E2E remain 0 after format-equivalence reevaluation. Selection prioritizes complete annotations, evidence and execution stability, not E2E alone. Gold remains provisional until human review.",
+  "candidate_id": "gemma4_12b",
+  "model_tag": "gemma4:12b",
+  "digest": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+  "quantization": "Q4_K_M",
+  "ollama_version": "0.33.3",
+  "evaluation_summary_path": "results/screening-001/evaluation-reviewed-v1.1/summary.json",
+  "evaluation_summary_hash": "d7c6d0051b4ef45ec0cee8e41929c9fc8aa7b718863953dae8ef01d73f5f9601",
+  "screening_config_hash": "af32519ae01133663bc13ab947361da1713c1c4ddf26a77b93dba555c10bba21",
+  "selected_at": "2026-09-15T17:22:05.264918+00:00",
+  "authorization": {
+    "channel": "Codex conversation",
+    "decision_date": "2026-09-16",
+    "proposal": "Select Gemma4 12B as same-model Generator/fresh-context Judge; skip tie-break; complete Gold/rules/rubric review before Dev A/B/C/D.",
+    "response": "好"
+  },
+  "tie_break": {
+    "required": false,
+    "reason": "Large observed gap in schema, evidence and no-output failures; no extra model requests authorized by this record."
+  },
+  "model_parameters": {
+    "provider": "ollama",
+    "base_url": "http://127.0.0.1:11434",
+    "expected_ollama_version": "0.33.3",
+    "expected_quantization": "Q4_K_M",
+    "num_ctx": 8192,
+    "think": false,
+    "structured_output_mode": "prompt_only",
+    "keep_alive": "5m",
+    "connect_timeout_seconds": 5.0,
+    "question_timeout_seconds": 900.0,
+    "generator_model": "gemma4:12b",
+    "generator_version": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+    "judge_model": "gemma4:12b",
+    "judge_version": "4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+    "generator_temperature": 0.0,
+    "judge_temperature": 0.0,
+    "top_p": null,
+    "top_k": null,
+    "repeat_penalty": null,
+    "max_tokens": 4096,
+    "supports_seed": true,
+    "base_seed": 20260915,
+    "timeout_seconds": 300.0
+  },
+  "gold_review_status": "PENDING",
+  "rules_review_status": "PENDING",
+  "judge_rubric_review_status": "PENDING",
+  "freeze_status": "NOT_STARTED"
+}

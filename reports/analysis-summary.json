@@ -1,0 +1,1476 @@
+{
+  "development": {
+    "metrics": {
+      "experiment_kind": "main",
+      "mode": "live",
+      "expected_question_runs": 48,
+      "observed_question_runs": 48,
+      "pending_review_count": 0,
+      "metrics": {
+        "A": {
+          "semantic_parsing_accuracy": {
+            "per_run": [
+              0.5833333333333334
+            ],
+            "mean": 0.5833333333333334,
+            "sample_sd": null
+          },
+          "question_type_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "evidence_precision": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_recall": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_f1": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "answer_accuracy": {
+            "per_run": [
+              0.5833333333333334
+            ],
+            "mean": 0.5833333333333334,
+            "sample_sd": null
+          },
+          "python_execution_rate": {
+            "per_run": [
+              0.8333333333333334
+            ],
+            "mean": 0.8333333333333334,
+            "sample_sd": null
+          },
+          "python_answer_consistency": {
+            "per_run": [
+              0.5
+            ],
+            "mean": 0.5,
+            "sample_sd": null
+          },
+          "unit_accuracy": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_accuracy": {
+            "per_run": [
+              0.4166666666666667
+            ],
+            "mean": 0.4166666666666667,
+            "sample_sd": null
+          },
+          "python_accuracy": {
+            "per_run": [
+              0.25
+            ],
+            "mean": 0.25,
+            "sample_sd": null
+          },
+          "evidence_micro_precision": {
+            "per_run": [
+              0.92
+            ],
+            "mean": 0.92,
+            "sample_sd": null
+          },
+          "evidence_micro_recall": {
+            "per_run": [
+              0.92
+            ],
+            "mean": 0.92,
+            "sample_sd": null
+          },
+          "evidence_micro_f1": {
+            "per_run": [
+              0.92
+            ],
+            "mean": 0.92,
+            "sample_sd": null
+          },
+          "question_count": {
+            "per_run": [
+              12
+            ],
+            "mean": 12,
+            "sample_sd": null
+          },
+          "e2e_accuracy": {
+            "per_run": [
+              0.16666666666666666
+            ],
+            "mean": 0.16666666666666666,
+            "sample_sd": null
+          },
+          "first_pass_accuracy": {
+            "per_run": [
+              0.16666666666666666
+            ],
+            "mean": 0.16666666666666666,
+            "sample_sd": null
+          },
+          "final_accuracy": {
+            "per_run": [
+              0.16666666666666666
+            ],
+            "mean": 0.16666666666666666,
+            "sample_sd": null
+          },
+          "recovery_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          },
+          "recovery_numerator": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "recovery_denominator": {
+            "per_run": [
+              10
+            ],
+            "mean": 10,
+            "sample_sd": null
+          },
+          "pending_reviews": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "accepted_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          }
+        },
+        "B": {
+          "semantic_parsing_accuracy": {
+            "per_run": [
+              0.75
+            ],
+            "mean": 0.75,
+            "sample_sd": null
+          },
+          "question_type_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "evidence_precision": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_recall": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_f1": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "answer_accuracy": {
+            "per_run": [
+              0.5
+            ],
+            "mean": 0.5,
+            "sample_sd": null
+          },
+          "python_execution_rate": {
+            "per_run": [
+              0.8333333333333334
+            ],
+            "mean": 0.8333333333333334,
+            "sample_sd": null
+          },
+          "python_answer_consistency": {
+            "per_run": [
+              0.4166666666666667
+            ],
+            "mean": 0.4166666666666667,
+            "sample_sd": null
+          },
+          "unit_accuracy": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_accuracy": {
+            "per_run": [
+              0.8333333333333334
+            ],
+            "mean": 0.8333333333333334,
+            "sample_sd": null
+          },
+          "python_accuracy": {
+            "per_run": [
+              0.4166666666666667
+            ],
+            "mean": 0.4166666666666667,
+            "sample_sd": null
+          },
+          "evidence_micro_precision": {
+            "per_run": [
+              0.92
+            ],
+            "mean": 0.92,
+            "sample_sd": null
+          },
+          "evidence_micro_recall": {
+            "per_run": [
+              0.92
+            ],
+            "mean": 0.92,
+            "sample_sd": null
+          },
+          "evidence_micro_f1": {
+            "per_run": [
+              0.92
+            ],
+            "mean": 0.92,
+            "sample_sd": null
+          },
+          "question_count": {
+            "per_run": [
+              12
+            ],
+            "mean": 12,
+            "sample_sd": null
+          },
+          "e2e_accuracy": {
+            "per_run": [
+              0.3333333333333333
+            ],
+            "mean": 0.3333333333333333,
+            "sample_sd": null
+          },
+          "first_pass_accuracy": {
+            "per_run": [
+              0.3333333333333333
+            ],
+            "mean": 0.3333333333333333,
+            "sample_sd": null
+          },
+          "final_accuracy": {
+            "per_run": [
+              0.3333333333333333
+            ],
+            "mean": 0.3333333333333333,
+            "sample_sd": null
+          },
+          "recovery_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          },
+          "recovery_numerator": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "recovery_denominator": {
+            "per_run": [
+              8
+            ],
+            "mean": 8,
+            "sample_sd": null
+          },
+          "pending_reviews": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "accepted_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          }
+        },
+        "C": {
+          "semantic_parsing_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "question_type_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "evidence_precision": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "evidence_recall": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "evidence_f1": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "answer_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "python_execution_rate": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "python_answer_consistency": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "unit_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "evidence_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "python_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "evidence_micro_precision": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "evidence_micro_recall": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "evidence_micro_f1": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "question_count": {
+            "per_run": [
+              12
+            ],
+            "mean": 12,
+            "sample_sd": null
+          },
+          "e2e_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "first_pass_accuracy": {
+            "per_run": [
+              0.3333333333333333
+            ],
+            "mean": 0.3333333333333333,
+            "sample_sd": null
+          },
+          "final_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "recovery_rate": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "recovery_numerator": {
+            "per_run": [
+              8
+            ],
+            "mean": 8,
+            "sample_sd": null
+          },
+          "recovery_denominator": {
+            "per_run": [
+              8
+            ],
+            "mean": 8,
+            "sample_sd": null
+          },
+          "pending_reviews": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "accepted_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          }
+        },
+        "D": {
+          "semantic_parsing_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "question_type_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "evidence_precision": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "evidence_recall": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "evidence_f1": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "answer_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "python_execution_rate": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "python_answer_consistency": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "unit_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "evidence_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "python_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "evidence_micro_precision": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "evidence_micro_recall": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "evidence_micro_f1": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "question_count": {
+            "per_run": [
+              12
+            ],
+            "mean": 12,
+            "sample_sd": null
+          },
+          "e2e_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "first_pass_accuracy": {
+            "per_run": [
+              0.3333333333333333
+            ],
+            "mean": 0.3333333333333333,
+            "sample_sd": null
+          },
+          "final_accuracy": {
+            "per_run": [
+              1
+            ],
+            "mean": 1,
+            "sample_sd": null
+          },
+          "recovery_rate": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          },
+          "recovery_numerator": {
+            "per_run": [
+              8
+            ],
+            "mean": 8,
+            "sample_sd": null
+          },
+          "recovery_denominator": {
+            "per_run": [
+              8
+            ],
+            "mean": 8,
+            "sample_sd": null
+          },
+          "pending_reviews": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "accepted_rate": {
+            "per_run": [
+              1.0
+            ],
+            "mean": 1.0,
+            "sample_sd": null
+          }
+        }
+      },
+      "evaluated_at": "2026-09-17T14:12:02.724818+00:00",
+      "review_labels_hash": "3fda216d3132e56f3f9a9dee2dc8139a08b8f8b68b223d6a42dac29549a858a7",
+      "rules_hash": "f9d2968d1e90fcc394676f8f382898961f55d1c5e6e30c994f6882994798ffaf",
+      "experiment_manifest_hash": "4014e7aaf97b89dfd03f93eafe2f0a35615d1943b8cb22ca254677a19165b80a",
+      "review_provenance": {
+        "review_mode": "ai_assisted",
+        "review_record_hash": "0e3eba57c6d6ece4069c3d162f057aecbe809d948a3eef7241ce5dcf68ea9ec7",
+        "reviewer": "Codex AI (current conversation)",
+        "human_review_completed": false
+      },
+      "semantic_label_sources": [
+        "ai_assisted"
+      ]
+    },
+    "conditions": {
+      "A": {
+        "attempts": 12,
+        "final_statuses": {
+          "SUBMITTED": 12
+        },
+        "runtime_errors": {},
+        "judge_requests": 0,
+        "judge_rejections": 0,
+        "first_correct_final_wrong": 0
+      },
+      "B": {
+        "attempts": 12,
+        "final_statuses": {
+          "SUBMITTED": 12
+        },
+        "runtime_errors": {},
+        "judge_requests": 0,
+        "judge_rejections": 0,
+        "first_correct_final_wrong": 0
+      },
+      "C": {
+        "attempts": 21,
+        "final_statuses": {
+          "VALIDATED": 12
+        },
+        "runtime_errors": {},
+        "judge_requests": 0,
+        "judge_rejections": 0,
+        "first_correct_final_wrong": 0
+      },
+      "D": {
+        "attempts": 22,
+        "final_statuses": {
+          "ACCEPTED": 12
+        },
+        "runtime_errors": {},
+        "judge_requests": 12,
+        "judge_rejections": 0,
+        "first_correct_final_wrong": 0
+      }
+    },
+    "paired_cd": {
+      "C對 D對": 12
+    }
+  },
+  "test": {
+    "metrics": {
+      "experiment_kind": "main",
+      "mode": "live",
+      "expected_question_runs": 192,
+      "observed_question_runs": 192,
+      "pending_review_count": 0,
+      "metrics": {
+        "A": {
+          "semantic_parsing_accuracy": {
+            "per_run": [
+              0.7291666666666666
+            ],
+            "mean": 0.7291666666666666,
+            "sample_sd": null
+          },
+          "question_type_accuracy": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_precision": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_recall": {
+            "per_run": [
+              0.90625
+            ],
+            "mean": 0.90625,
+            "sample_sd": null
+          },
+          "evidence_f1": {
+            "per_run": [
+              0.9106060606060606
+            ],
+            "mean": 0.9106060606060606,
+            "sample_sd": null
+          },
+          "answer_accuracy": {
+            "per_run": [
+              0.6041666666666666
+            ],
+            "mean": 0.6041666666666666,
+            "sample_sd": null
+          },
+          "python_execution_rate": {
+            "per_run": [
+              0.7083333333333334
+            ],
+            "mean": 0.7083333333333334,
+            "sample_sd": null
+          },
+          "python_answer_consistency": {
+            "per_run": [
+              0.5
+            ],
+            "mean": 0.5,
+            "sample_sd": null
+          },
+          "unit_accuracy": {
+            "per_run": [
+              0.8958333333333334
+            ],
+            "mean": 0.8958333333333334,
+            "sample_sd": null
+          },
+          "evidence_accuracy": {
+            "per_run": [
+              0.2916666666666667
+            ],
+            "mean": 0.2916666666666667,
+            "sample_sd": null
+          },
+          "python_accuracy": {
+            "per_run": [
+              0.1875
+            ],
+            "mean": 0.1875,
+            "sample_sd": null
+          },
+          "evidence_micro_precision": {
+            "per_run": [
+              0.9433962264150944
+            ],
+            "mean": 0.9433962264150944,
+            "sample_sd": null
+          },
+          "evidence_micro_recall": {
+            "per_run": [
+              0.9009009009009009
+            ],
+            "mean": 0.9009009009009009,
+            "sample_sd": null
+          },
+          "evidence_micro_f1": {
+            "per_run": [
+              0.9216589861751152
+            ],
+            "mean": 0.9216589861751152,
+            "sample_sd": null
+          },
+          "question_count": {
+            "per_run": [
+              48
+            ],
+            "mean": 48,
+            "sample_sd": null
+          },
+          "e2e_accuracy": {
+            "per_run": [
+              0.16666666666666666
+            ],
+            "mean": 0.16666666666666666,
+            "sample_sd": null
+          },
+          "first_pass_accuracy": {
+            "per_run": [
+              0.16666666666666666
+            ],
+            "mean": 0.16666666666666666,
+            "sample_sd": null
+          },
+          "final_accuracy": {
+            "per_run": [
+              0.16666666666666666
+            ],
+            "mean": 0.16666666666666666,
+            "sample_sd": null
+          },
+          "recovery_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          },
+          "recovery_numerator": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "recovery_denominator": {
+            "per_run": [
+              40
+            ],
+            "mean": 40,
+            "sample_sd": null
+          },
+          "pending_reviews": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "accepted_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          }
+        },
+        "B": {
+          "semantic_parsing_accuracy": {
+            "per_run": [
+              0.6666666666666666
+            ],
+            "mean": 0.6666666666666666,
+            "sample_sd": null
+          },
+          "question_type_accuracy": {
+            "per_run": [
+              0.8541666666666666
+            ],
+            "mean": 0.8541666666666666,
+            "sample_sd": null
+          },
+          "evidence_precision": {
+            "per_run": [
+              0.8333333333333334
+            ],
+            "mean": 0.8333333333333334,
+            "sample_sd": null
+          },
+          "evidence_recall": {
+            "per_run": [
+              0.8229166666666666
+            ],
+            "mean": 0.8229166666666666,
+            "sample_sd": null
+          },
+          "evidence_f1": {
+            "per_run": [
+              0.8270833333333333
+            ],
+            "mean": 0.8270833333333333,
+            "sample_sd": null
+          },
+          "answer_accuracy": {
+            "per_run": [
+              0.5416666666666666
+            ],
+            "mean": 0.5416666666666666,
+            "sample_sd": null
+          },
+          "python_execution_rate": {
+            "per_run": [
+              0.7291666666666666
+            ],
+            "mean": 0.7291666666666666,
+            "sample_sd": null
+          },
+          "python_answer_consistency": {
+            "per_run": [
+              0.4791666666666667
+            ],
+            "mean": 0.4791666666666667,
+            "sample_sd": null
+          },
+          "unit_accuracy": {
+            "per_run": [
+              0.8333333333333334
+            ],
+            "mean": 0.8333333333333334,
+            "sample_sd": null
+          },
+          "evidence_accuracy": {
+            "per_run": [
+              0.75
+            ],
+            "mean": 0.75,
+            "sample_sd": null
+          },
+          "python_accuracy": {
+            "per_run": [
+              0.4166666666666667
+            ],
+            "mean": 0.4166666666666667,
+            "sample_sd": null
+          },
+          "evidence_micro_precision": {
+            "per_run": [
+              0.9278350515463918
+            ],
+            "mean": 0.9278350515463918,
+            "sample_sd": null
+          },
+          "evidence_micro_recall": {
+            "per_run": [
+              0.8108108108108109
+            ],
+            "mean": 0.8108108108108109,
+            "sample_sd": null
+          },
+          "evidence_micro_f1": {
+            "per_run": [
+              0.8653846153846154
+            ],
+            "mean": 0.8653846153846154,
+            "sample_sd": null
+          },
+          "question_count": {
+            "per_run": [
+              48
+            ],
+            "mean": 48,
+            "sample_sd": null
+          },
+          "e2e_accuracy": {
+            "per_run": [
+              0.3541666666666667
+            ],
+            "mean": 0.3541666666666667,
+            "sample_sd": null
+          },
+          "first_pass_accuracy": {
+            "per_run": [
+              0.3541666666666667
+            ],
+            "mean": 0.3541666666666667,
+            "sample_sd": null
+          },
+          "final_accuracy": {
+            "per_run": [
+              0.3541666666666667
+            ],
+            "mean": 0.3541666666666667,
+            "sample_sd": null
+          },
+          "recovery_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          },
+          "recovery_numerator": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "recovery_denominator": {
+            "per_run": [
+              31
+            ],
+            "mean": 31,
+            "sample_sd": null
+          },
+          "pending_reviews": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "accepted_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          }
+        },
+        "C": {
+          "semantic_parsing_accuracy": {
+            "per_run": [
+              0.9791666666666666
+            ],
+            "mean": 0.9791666666666666,
+            "sample_sd": null
+          },
+          "question_type_accuracy": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_precision": {
+            "per_run": [
+              0.96875
+            ],
+            "mean": 0.96875,
+            "sample_sd": null
+          },
+          "evidence_recall": {
+            "per_run": [
+              0.96875
+            ],
+            "mean": 0.96875,
+            "sample_sd": null
+          },
+          "evidence_f1": {
+            "per_run": [
+              0.96875
+            ],
+            "mean": 0.96875,
+            "sample_sd": null
+          },
+          "answer_accuracy": {
+            "per_run": [
+              0.8958333333333334
+            ],
+            "mean": 0.8958333333333334,
+            "sample_sd": null
+          },
+          "python_execution_rate": {
+            "per_run": [
+              0.8958333333333334
+            ],
+            "mean": 0.8958333333333334,
+            "sample_sd": null
+          },
+          "python_answer_consistency": {
+            "per_run": [
+              0.8541666666666666
+            ],
+            "mean": 0.8541666666666666,
+            "sample_sd": null
+          },
+          "unit_accuracy": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_accuracy": {
+            "per_run": [
+              0.9375
+            ],
+            "mean": 0.9375,
+            "sample_sd": null
+          },
+          "python_accuracy": {
+            "per_run": [
+              0.8125
+            ],
+            "mean": 0.8125,
+            "sample_sd": null
+          },
+          "evidence_micro_precision": {
+            "per_run": [
+              0.9904761904761905
+            ],
+            "mean": 0.9904761904761905,
+            "sample_sd": null
+          },
+          "evidence_micro_recall": {
+            "per_run": [
+              0.9369369369369369
+            ],
+            "mean": 0.9369369369369369,
+            "sample_sd": null
+          },
+          "evidence_micro_f1": {
+            "per_run": [
+              0.9629629629629629
+            ],
+            "mean": 0.9629629629629629,
+            "sample_sd": null
+          },
+          "question_count": {
+            "per_run": [
+              48
+            ],
+            "mean": 48,
+            "sample_sd": null
+          },
+          "e2e_accuracy": {
+            "per_run": [
+              0.8125
+            ],
+            "mean": 0.8125,
+            "sample_sd": null
+          },
+          "first_pass_accuracy": {
+            "per_run": [
+              0.375
+            ],
+            "mean": 0.375,
+            "sample_sd": null
+          },
+          "final_accuracy": {
+            "per_run": [
+              0.8125
+            ],
+            "mean": 0.8125,
+            "sample_sd": null
+          },
+          "recovery_rate": {
+            "per_run": [
+              0.7
+            ],
+            "mean": 0.7,
+            "sample_sd": null
+          },
+          "recovery_numerator": {
+            "per_run": [
+              21
+            ],
+            "mean": 21,
+            "sample_sd": null
+          },
+          "recovery_denominator": {
+            "per_run": [
+              30
+            ],
+            "mean": 30,
+            "sample_sd": null
+          },
+          "pending_reviews": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "accepted_rate": {
+            "per_run": [
+              0.0
+            ],
+            "mean": 0.0,
+            "sample_sd": null
+          }
+        },
+        "D": {
+          "semantic_parsing_accuracy": {
+            "per_run": [
+              0.9791666666666666
+            ],
+            "mean": 0.9791666666666666,
+            "sample_sd": null
+          },
+          "question_type_accuracy": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_precision": {
+            "per_run": [
+              0.96875
+            ],
+            "mean": 0.96875,
+            "sample_sd": null
+          },
+          "evidence_recall": {
+            "per_run": [
+              0.96875
+            ],
+            "mean": 0.96875,
+            "sample_sd": null
+          },
+          "evidence_f1": {
+            "per_run": [
+              0.96875
+            ],
+            "mean": 0.96875,
+            "sample_sd": null
+          },
+          "answer_accuracy": {
+            "per_run": [
+              0.8958333333333334
+            ],
+            "mean": 0.8958333333333334,
+            "sample_sd": null
+          },
+          "python_execution_rate": {
+            "per_run": [
+              0.8958333333333334
+            ],
+            "mean": 0.8958333333333334,
+            "sample_sd": null
+          },
+          "python_answer_consistency": {
+            "per_run": [
+              0.8541666666666666
+            ],
+            "mean": 0.8541666666666666,
+            "sample_sd": null
+          },
+          "unit_accuracy": {
+            "per_run": [
+              0.9166666666666666
+            ],
+            "mean": 0.9166666666666666,
+            "sample_sd": null
+          },
+          "evidence_accuracy": {
+            "per_run": [
+              0.9375
+            ],
+            "mean": 0.9375,
+            "sample_sd": null
+          },
+          "python_accuracy": {
+            "per_run": [
+              0.8125
+            ],
+            "mean": 0.8125,
+            "sample_sd": null
+          },
+          "evidence_micro_precision": {
+            "per_run": [
+              0.9904761904761905
+            ],
+            "mean": 0.9904761904761905,
+            "sample_sd": null
+          },
+          "evidence_micro_recall": {
+            "per_run": [
+              0.9369369369369369
+            ],
+            "mean": 0.9369369369369369,
+            "sample_sd": null
+          },
+          "evidence_micro_f1": {
+            "per_run": [
+              0.9629629629629629
+            ],
+            "mean": 0.9629629629629629,
+            "sample_sd": null
+          },
+          "question_count": {
+            "per_run": [
+              48
+            ],
+            "mean": 48,
+            "sample_sd": null
+          },
+          "e2e_accuracy": {
+            "per_run": [
+              0.8125
+            ],
+            "mean": 0.8125,
+            "sample_sd": null
+          },
+          "first_pass_accuracy": {
+            "per_run": [
+              0.375
+            ],
+            "mean": 0.375,
+            "sample_sd": null
+          },
+          "final_accuracy": {
+            "per_run": [
+              0.8125
+            ],
+            "mean": 0.8125,
+            "sample_sd": null
+          },
+          "recovery_rate": {
+            "per_run": [
+              0.7
+            ],
+            "mean": 0.7,
+            "sample_sd": null
+          },
+          "recovery_numerator": {
+            "per_run": [
+              21
+            ],
+            "mean": 21,
+            "sample_sd": null
+          },
+          "recovery_denominator": {
+            "per_run": [
+              30
+            ],
+            "mean": 30,
+            "sample_sd": null
+          },
+          "pending_reviews": {
+            "per_run": [
+              0
+            ],
+            "mean": 0,
+            "sample_sd": null
+          },
+          "accepted_rate": {
+            "per_run": [
+              0.8125
+            ],
+            "mean": 0.8125,
+            "sample_sd": null
+          }
+        }
+      },
+      "evaluated_at": "2026-09-17T14:22:54.866829+00:00",
+      "review_labels_hash": "6124494b8281d848c7e298d0368c93234f4e415676b8cd6933206f1a1131b847",
+      "rules_hash": "f9d2968d1e90fcc394676f8f382898961f55d1c5e6e30c994f6882994798ffaf",
+      "experiment_manifest_hash": "afd1b40cd182e7d7e4dbbff2f7d358fe1b43eeaf7d607c6d62291333c655850f",
+      "review_provenance": {
+        "review_mode": "ai_assisted",
+        "review_record_hash": "0e3eba57c6d6ece4069c3d162f057aecbe809d948a3eef7241ce5dcf68ea9ec7",
+        "reviewer": "Codex AI (current conversation)",
+        "human_review_completed": false
+      },
+      "semantic_label_sources": [
+        "ai_assisted"
+      ]
+    },
+    "conditions": {
+      "A": {
+        "attempts": 48,
+        "final_statuses": {
+          "SUBMITTED": 48
+        },
+        "runtime_errors": {},
+        "judge_requests": 0,
+        "judge_rejections": 0,
+        "first_correct_final_wrong": 0
+      },
+      "B": {
+        "attempts": 48,
+        "final_statuses": {
+          "SUBMITTED": 47,
+          "FAILED": 1
+        },
+        "runtime_errors": {
+          "INTERRUPTED": 1
+        },
+        "judge_requests": 0,
+        "judge_rejections": 0,
+        "first_correct_final_wrong": 0
+      },
+      "C": {
+        "attempts": 93,
+        "final_statuses": {
+          "VALIDATED": 39,
+          "FAILED": 9
+        },
+        "runtime_errors": {},
+        "judge_requests": 0,
+        "judge_rejections": 0,
+        "first_correct_final_wrong": 0
+      },
+      "D": {
+        "attempts": 93,
+        "final_statuses": {
+          "ACCEPTED": 39,
+          "FAILED": 9
+        },
+        "runtime_errors": {},
+        "judge_requests": 39,
+        "judge_rejections": 0,
+        "first_correct_final_wrong": 0
+      }
+    },
+    "paired_cd": {
+      "C對 D對": 39,
+      "C錯 D錯": 9
+    }
+  },
+  "combined": [
+    [
+      "A",
+      "10/60",
+      "16.7%",
+      0
+    ],
+    [
+      "B",
+      "21/60",
+      "35.0%",
+      0
+    ],
+    [
+      "C",
+      "51/60",
+      "85.0%",
+      0
+    ],
+    [
+      "D",
+      "51/60",
+      "85.0%",
+      0
+    ]
+  ]
+}

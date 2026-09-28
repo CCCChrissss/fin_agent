@@ -39,6 +39,15 @@ def parser():
     p.add_argument("--root", type=Path, default=Path.cwd())
     sub = p.add_subparsers(dest="command", required=True)
     sub.add_parser("audit")
+    prepare_review = sub.add_parser("prepare-review-data")
+    prepare_review.add_argument("--output", required=True)
+    validate_review = sub.add_parser("validate-review")
+    validate_review.add_argument("--input", type=Path, required=True)
+    validate_review.add_argument("--output", required=True)
+    dev_preflight = sub.add_parser("dev-preflight")
+    dev_preflight.add_argument("--config", default="config/experiment.gemma4.v1.json")
+    dev_preflight.add_argument("--review-workbook", type=Path)
+    dev_preflight.add_argument("--output", required=True)
     pre = sub.add_parser("ollama-preflight")
     pre.add_argument("--config", default="config/screening.example.yaml")
     pre.add_argument("--output", required=True)
@@ -53,6 +62,7 @@ def parser():
     screening_eval.add_argument("--experiment", nargs="+", required=True)
     screening_eval.add_argument("--output", required=True)
     screening_eval.add_argument("--reviews", type=Path)
+    screening_eval.add_argument("--revision", type=Path, help="Explicit hash-pinned offline scoring revision JSON")
     v = sub.add_parser("verify-gold-python")
     v.add_argument("--output", required=True)
     sub.add_parser("derive")
@@ -61,7 +71,7 @@ def parser():
     f = sub.add_parser("freeze")
     f.add_argument("--config", default="config/experiment.example.yaml")
     f.add_argument("--reviewer", required=True)
-    f.add_argument("--attestation", required=True, choices=["gold-and-rules-reviewed"])
+    f.add_argument("--attestation", required=True, choices=["gold-and-rules-reviewed", "ai-reviewed-gold-and-rules"])
     d = sub.add_parser("demo")
     d.add_argument("--output", default="artifacts/runtime/synthetic-demo")
     r = sub.add_parser("run")
@@ -101,6 +111,32 @@ def main(argv=None):
 
 
 def dispatch(args, root, source):
+    if args.command == "prepare-review-data":
+        from .human_review import build_review_payload
+        report = build_review_payload(root)
+        write_new_json(safe_output(root, args.output), report)
+        return {"output": args.output, "question_count": len(report["rows"]),
+                "source_sha256": report["source_sha256"], "original_gold_modified": False}
+    if args.command == "validate-review":
+        from .human_review import validate_review_workbook
+        input_path = (root / args.input).resolve(strict=True)
+        if not input_path.is_relative_to(root):
+            raise ValueError("Review workbook must be inside the project")
+        report = validate_review_workbook(input_path, root)
+        write_new_json(safe_output(root, args.output), report)
+        return report
+    if args.command == "dev-preflight":
+        from .human_review import validate_review_workbook
+        from .preflight import dev_preflight
+        review_report = None
+        if args.review_workbook:
+            review_path = (root / args.review_workbook).resolve(strict=True)
+            if not review_path.is_relative_to(root):
+                raise ValueError("Review workbook must be inside the project")
+            review_report = validate_review_workbook(review_path, root)
+        report = dev_preflight(root, (root / args.config).resolve(strict=True), review_report)
+        write_new_json(safe_output(root, args.output), report)
+        return report
     if args.command == "ollama-preflight":
         from .ollama_provider import inventory
         from .runtime_environment import environment_snapshot
@@ -196,12 +232,19 @@ def dispatch(args, root, source):
             return run_screening(config, split, questions, repo, load_rules(root), load_prompts(root), safe_output(root, args.output),
                                  provenance, environment_snapshot(), resume=args.resume)
         directories = [(root / p).resolve(strict=True) for p in args.experiment]
-        for directory in directories:
-            manifest = read_json(directory / "manifest.json")
-            if any(manifest.get(k) != v for k, v in provenance.items()):
+        manifests = [read_json(directory / "manifest.json") for directory in directories]
+        for manifest in manifests:
+            if any(manifest.get(k) != provenance[k] for k in ("source_manifest_hash", "split_hash")):
                 raise ValueError("Screening evaluation source/code differs from experiment")
+        evaluation_provenance = None
+        if args.revision:
+            from .reevaluation import verify_revision
+            evaluation_provenance = verify_revision(manifests, provenance["project_hashes"], read_json(root / args.revision))
+        elif any(m["project_hashes"] != provenance["project_hashes"] for m in manifests):
+            raise ValueError("Screening evaluation source/code differs from experiment")
         return evaluate_screenings(directories, read_jsonl(derived / "gold_annotations.jsonl"), questions, repo, load_rules(root), split,
-                                   safe_output(root, args.output), read_jsonl(args.reviews) if args.reviews else None)
+                                   safe_output(root, args.output), read_jsonl(args.reviews) if args.reviews else None,
+                                   evaluation_provenance=evaluation_provenance)
     if args.command == "evaluate":
         directory = (root / args.experiment).resolve(strict=True)
         manifest = read_json(directory / "manifest.json")
@@ -219,7 +262,7 @@ def dispatch(args, root, source):
     if settings.split_seed != split["seed"]:
         raise ValueError("Config and split seed differ")
     ids = split[args.partition]
-    expected = [{"run_index": r, "condition": c, "question_id": q} for r in (1, 2, 3) for c in "ABCD" for q in ids]
+    expected = [{"run_index": r, "condition": c, "question_id": q} for r in range(1, settings.runs_per_condition + 1) for c in "ABCD" for q in ids]
     if args.dry_run:
         return {"partition": args.partition, "question_runs": len(expected), "conditions": settings.conditions,
                 "live_calls_allowed": settings.max_live_calls, "no_API_called": True, "source_verified": True,
@@ -228,12 +271,15 @@ def dispatch(args, root, source):
         raise ValueError("Use demo for offline verification; run requires explicit --live")
     settings.require_live()
     validate_selection(root, settings)
+    from .governance import review_provenance
+    review = review_provenance(root, settings, source_manifest)
     if args.partition == "test":
         verify_freeze(root, source_manifest, split, settings, read_json(root / "artifacts/freeze_manifest.json"))
     output = safe_output(root, args.output)
     manifest = {"schema_version": "1.0", "experiment_id": output.name, "experiment_kind": "main", "mode": "live",
                 "partition": args.partition, "expected_runs": expected, "settings": settings.model_dump(),
-                "source_manifest_hash": digest(source_manifest), "split_hash": digest(split), "project_hashes": project_hashes(root)}
+                "source_manifest_hash": digest(source_manifest), "split_hash": digest(split), "project_hashes": project_hashes(root),
+                "review_provenance": review}
     if output.exists():
         if not args.resume:
             raise FileExistsError("Experiment already exists; explicit --resume required")
@@ -267,7 +313,7 @@ def dispatch(args, root, source):
         client.calls = sum(1 for path in output.glob("run_*/[ABCD]/events.jsonl") for event in read_jsonl(path)
                            if event["event"] in ("generator_request", "judge_request"))
     repo = FactRepository(derived / "financial_facts.sqlite", aliases, settings.search_top_k)
-    for run_index in (1, 2, 3):
+    for run_index in range(1, settings.runs_per_condition + 1):
         for condition in "ABCD":
             with TraceStore(output / f"run_{run_index:02d}" / condition) as store:
                 runner = AnnotationRunner(settings, repo, load_rules(root), load_prompts(root), client, store)

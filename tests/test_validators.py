@@ -89,6 +89,8 @@ def test_explicit_year_normalization(question, years):
 
 def test_answer_comparison_rules():
     assert answer_equal(114, 2025, "year")
+    assert answer_equal("114年", 2025, "year")
+    assert answer_equal("2025年", 2025, "year")
     assert answer_equal("是", "Yes", "boolean")
     assert answer_equal(3.80, 3.8, "TWD")
     assert not answer_equal(0.02, 2, "percent")
@@ -157,3 +159,27 @@ def test_context_unit_must_match_exactly(specimen, rules):
     artifact = copy.deepcopy(specimen[2])
     artifact["golden_context"] = artifact["golden_context"].replace("新臺幣仟元", "元")
     assert "UNIT_ERROR" in codes(validate(specimen, rules, artifact))
+
+
+def test_validator_feedback_contains_concrete_period_and_binding_fix(specimen, rules):
+    bad = copy.deepcopy(specimen[2])
+    bad["semantic_parse"]["time"][0]["period_start"] = None
+    bad["selected_evidence"][0]["index_key"] = 2024
+    checks = validate(specimen, rules, bad)
+    issues = [i for check in checks for i in check.issues]
+    time_issue = next(i for i in issues if i.rule_id == "TIME-02")
+    binding_issue = next(i for i in issues if i.rule_id == "POT-01" and i.observed_value == "revenue_2024")
+    assert "2024-01-01" in time_issue.expected_constraint
+    assert "index_key=null" in binding_issue.recommended_correction
+
+
+def test_validator_feedback_names_required_output_unit_and_both_answer_values(specimen, rules):
+    bad = copy.deepcopy(specimen[2])
+    bad["answer"] = 99
+    bad["unit"] = "TWD_thousand"
+    checks = validate(specimen, rules, bad)
+    issues = [i for check in checks for i in check.issues]
+    unit_issue = next(i for i in issues if i.rule_id == "UNIT-02")
+    answer_issue = next(i for i in issues if i.rule_id == "POT-02")
+    assert "percent" in unit_issue.recommended_correction
+    assert answer_issue.observed_value == {"annotation_answer": 99, "python_result": 20.0}

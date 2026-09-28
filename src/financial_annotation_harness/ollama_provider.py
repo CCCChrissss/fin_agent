@@ -110,6 +110,9 @@ class OllamaProvider:
             payload["think"] = m.think
         return payload
 
+    def describe_completion_request(self, role, seed, tools):
+        return self.describe_request(role, seed)
+
     def complete(self, messages, tools, *, role, seed):
         if role not in ("generator", "judge"):
             raise ValueError("Unknown model role")
@@ -118,7 +121,7 @@ class OllamaProvider:
         remaining = self.deadline - time.monotonic() if self.deadline else self.settings.model.timeout_seconds
         if remaining <= 0:
             raise ProviderError("TIMEOUT", "Question deadline exceeded")
-        payload = self.describe_request(role, seed)
+        payload = self.describe_completion_request(role, seed, tools)
         converted, names = [], {}
         for original in messages:
             msg = copy.deepcopy(original)
@@ -160,11 +163,18 @@ class OllamaProvider:
             durations = {key: data.get(key) for key in ("total_duration", "load_duration", "prompt_eval_duration", "eval_duration")}
             return Turn(content=content, tool_calls=calls, model=data["model"], request_id=request_id,
                 finish_reason=data.get("done_reason", "stop"), input_tokens=data.get("prompt_eval_count"), output_tokens=data.get("eval_count"),
-                runtime={**self.runtime, "request_parameters": self.describe_request(role, seed),
+                runtime={**self.runtime, "request_parameters": self.describe_completion_request(role, seed, tools),
                          "wall_latency_ms": round((time.monotonic() - started) * 1000), "durations_ns": durations,
                          "thinking_present": bool(message.get("thinking")), "request_id_origin": "harness"})
         except (KeyError, TypeError, ValueError) as exc:
-            raise ProviderError("MALFORMED_RESPONSE", "Invalid Ollama chat response; no repair attempted") from exc
+            diagnostic_response = copy.deepcopy(data)
+            if isinstance(diagnostic_response.get("message"), dict):
+                diagnostic_response["message"].pop("thinking", None)
+            raise ProviderError("MALFORMED_RESPONSE", "Invalid Ollama chat response; no repair attempted",
+                diagnostics={"response": diagnostic_response, "parse_error_type": type(exc).__name__,
+                             "parse_error": str(exc), "role": role,
+                             "request_parameters": self.describe_completion_request(role, seed, tools),
+                             "wall_latency_ms": round((time.monotonic() - started) * 1000)}) from exc
 
     def close(self):
         self.http.close()

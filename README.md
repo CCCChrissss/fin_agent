@@ -1,8 +1,25 @@
 # Financial Annotation Harness — TANET 2026
 
-**最新交接狀態：**兩候選 screening 與14筆人工 review 已完成，pending_reviews=0；正式模型尚未選定，正式 Test 尚未開始。下一步是釐清 Gemma reviewed E2E 0/12 的 component／validator 原因。請從 [Codex Handoff](docs/CODEX_HANDOFF.md) 接手，先讀既有產出，不重新跑模型。
+## 2026-09-28 專案封存與最新結果
 
-目前採 **Ollama-first / Windows**，正式模型尚未選定。先用 12 題 Development 的 Condition B 篩選 qwen3.5:9b 與 gemma4:12b 兩個候選，共 24 question-runs；A/B/C/D 定義不變。完整命令與選模流程見 [Local Model Screening](docs/local_model_screening.md)。程式不下載模型、不監控下載，預設推論預算仍為 0。
+本次 GitHub 上傳包含完整程式、設定、測試、唯讀 Gold Dataset、研究文件與去識別化實驗封存。下方 2026-09-16 執行更新及交接狀態為歷史紀錄，不代表目前仍在執行。
+
+Protocol v1.1 的 60 題 × A/B/C/D × 1 次已完成，共 240 question-runs，pending review 為 0。最終 E2E：A 10/60（16.7%）、B 21/60（35.0%）、C 51/60（85.0%）、D 51/60（85.0%）。語意評分為 AI-assisted，Test 曾參與開發，結果屬固定版本回歸而非未接觸 holdout。
+
+- [HTML 結果報告](reports/report.html)（下載後以瀏覽器開啟）
+- [機器可讀結果](reports/analysis-summary.json)
+- [研究設計與完整結果 Word](reports/財務問答標註實驗設計與完整實驗結果.docx)
+- [封存內容、隱私處理與還原方式](research_archive/README.md)
+
+首次執行歷史資料相關測試前，請先還原封存、建立 `artifacts/runtime`，並執行 `derive`。這些步驟不呼叫模型。原始 Gold 檔案保持位元組不變。
+
+**2026-09-16 AI-assisted 執行更新：**研究者已授權 AI 代審並自主執行。Gold 的 60 題 Python/context 檢查與 AI 語意審查完成，非人工 review。Dev 144 題次已開始，背景流程會接續評分、凍結、Test 576 題次及結果彙整。最新階段為 `outputs/ai-assisted-study/status.json`；可直接開啟 `outputs/ai-assisted-study/experiment_results.html` 查看結果。使用 `config/experiment.ai-assisted.v1.json`，不再需要填寫人工工作簿才能推進；下文人工作業描述保留為原流程歷史。請勿重複啟動 runner。方法限制見 [AI review amendment](docs/ai_review_amendment.md)。
+
+**最新交接狀態：**兩候選 screening 與14筆人工 review 已完成，pending_reviews=0；已正式選用 Gemma4 12B 作 Generator／fresh-context Judge，省略 tie-break；正式 Test 尚未開始。已完成 [E2E 根因分析與格式 parser v1.1 共同重評](docs/e2e_failure_analysis.md)：Gemma unit accuracy 提升至 8/12，E2E 仍為 0。Gold／rules／rubric 的人工審查已整合成 Excel，並提供自動完整性驗證與離線 Dev preflight；操作方式見 [人工審查 gate](docs/review_gate_v1.1.md)。
+
+目前工程準備與驗證證據見 [Engineering Readiness v1.2](docs/engineering_readiness_v1.2.md)。除了人工審核與審核後才可解除的 live-call 保險外，Dev 前置工程已完成。
+
+目前採 **Ollama-first / Windows**，已選定 **gemma4:12b**。已用 12 題 Development 的 Condition B 比較 qwen3.5:9b 與 gemma4:12b 兩個候選，共 24 question-runs；A/B/C/D 定義不變。完整命令與選模流程見 [Local Model Screening](docs/local_model_screening.md)。程式不下載模型、不監控下載，預設推論預算仍為 0。
 
 第一版已提供唯讀 Excel 匯入、SQLite Fact Search、A/B/C/D runner、8 個 validators、獨立 Semantic Judge、Retry/Gate、JSONL traces 與離線 evaluation。預設不呼叫 API。
 
@@ -45,7 +62,7 @@ export PYTHONPATH="$PWD/src"
 
 ## 真實模型與正式測試
 
-先依 `docs/local_model_screening.md` 完成 preflight、smoke、screening 與人工選模。主實驗複製 `config/experiment.example.yaml` 為 `config/experiment.local.yaml`，填同一 Generator/Judge tag、digest、quantization、Ollama version 及 selection_record，再明確設定正的 max_live_calls。OpenAI adapter 保留為可選用途，需另設 provider=openai、snapshot 與 OPENAI_API_KEY；不作為本次主要 runtime。CLI 不自動載入 `.env`。
+Screening 與人工選模已完成。目前設定在 `config/experiment.gemma4.v1.json`，selection record 在 `config/model_selection/gemma4-12b-v1.json`。先在 `financial_gold_review_v1.1.xlsx` 完成 `docs/review_gate_v1.1.md` 的人工審查並通過 `validate-review`／`dev-preflight`，再設定正式 max_live_calls；目前保留 0，不執行模型。OpenAI adapter 保留為可選用途，需另設 provider=openai、snapshot 與 OPENAI_API_KEY；不作為本次主要 runtime。CLI 不自動載入 `.env`。
 
 只檢查執行規模、不呼叫 API：
 
@@ -55,7 +72,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\dev.ps1 run --
 
 預期為 **576 question-runs**；這不是 API calls 數。Development 的完整四組三次 runs 為 144 question-runs。
 
-實際執行、freeze 與 review 匯入命令見 `docs/reproducibility.md`。目前已有 live smoke、Development screening 與 reviewed evaluation；尚未選定正式模型或完成 Gold freeze，詳見 `docs/CODEX_HANDOFF.md`。
+實際執行、freeze 與 review 匯入命令見 `docs/reproducibility.md`。目前已有 live smoke、Development screening 與 reviewed evaluation；已完成 Gemma 選模，尚未完成 Gold review／freeze，詳見 `docs/CODEX_HANDOFF.md`。
 
 ---
 
